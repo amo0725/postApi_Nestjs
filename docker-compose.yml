@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  postapi:
+    container_name: postapi
+    image: postapi:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - net
+    env_file:
+      - .env
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: test
+    ports:
+      - 27017:27017
+    networks:
+      - net
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
+    driver: local
+networks:
+  net:
+    driver: bridge
